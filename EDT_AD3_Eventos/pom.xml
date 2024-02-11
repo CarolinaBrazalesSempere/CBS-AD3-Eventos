@@ -11,7 +11,7 @@
 	<groupId>eventos</groupId>
 	<artifactId>CBS_AD3_Events</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>EDT_AD3_Eventos</name>
+	<name>CBS_AD3_Eventos</name>
 	<description>Actividad 3 eventos, boot,jpa,security</description>
 	<properties>
 		<java.version>17</java.version>

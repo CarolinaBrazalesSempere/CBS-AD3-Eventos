@@ -83,30 +83,38 @@ public class EventoController {
 		
 		model.addAttribute("reservas", new Reserva());
 		
-		if (eventos != null) {
-			String username = aut.getName();
-			Usuario user = udao.findById(username);
-			
-			int reservasPermitidas = 10;
-			int reservasQuedan = 0;
-			int reservasTotal = redao.eventoReservadoPorUsuario(username, idEvento);
-			
-			reservasQuedan = reservasPermitidas - reservasTotal;
-			
-			//restar las reservas al aforo máximo
-			int aforoDispo = eventos.getAforoMaximo() - redao.reservasPorEvento(idEvento);
-			model.addAttribute("aforo", aforoDispo);
-			
-			//mostrar en el desplegable las reservas que quedan para no permitir +10
-			List<Integer> option = new ArrayList<>();
-			for (int i = 0; i <= reservasQuedan; i++) {
-				option.add(i);
-			}
-			model.addAttribute("option", option);
 		
-			return "detalle";
+		if (eventos != null) {
+			//Permitir la navegación al usuario no loggeado
+	        if (aut != null && aut.isAuthenticated()) {
+	            // El usuario está loggeado
+	            String username = aut.getName();
+	            Usuario user = udao.findById(username);
 
-		}
+	            int reservasPermitidas = 10;
+	            int reservasQuedan = 0;
+	            int reservasTotal = redao.eventoReservadoPorUsuario(username, idEvento);
+
+	            reservasQuedan = reservasPermitidas - reservasTotal;
+
+	            // Restar las reservas al aforo máximo
+	            int aforoDispo = eventos.getAforoMaximo() - redao.reservasPorEvento(idEvento);
+	            model.addAttribute("aforo", aforoDispo);
+
+	            // Mostrar en el desplegable las reservas que quedan para no permitir +10
+	            List<Integer> option = new ArrayList<>();
+	            for (int i = 0; i <= reservasQuedan; i++) {
+	                option.add(i);
+	            }
+	            model.addAttribute("option", option);
+
+	            return "detalle";
+	        } else {
+	            
+	            return "detalle";
+	        }
+	    }
+
 
 		return "forward:/home";
 
